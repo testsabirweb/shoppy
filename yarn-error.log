@@ -1,5 +1,5 @@
 Arguments: 
-  F:\node\installation\node.exe C:\Users\Sabir PC\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-gesture-handler@~1.5.0 react-native-reanimated@~1.4.0 react-native-screens@2.0.0-alpha.12 react-native-safe-area-context@0.6.0
+  F:\node\installation\node.exe C:\Users\Sabir PC\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add expo-font@~8.0.0
 
 PATH: 
   D:\python2\;D:\python2\Scripts;D:\python3\Scripts\;D:\python3\;D:\hack\python3\Scripts\;D:\hack\python3\;D:\hack\Scripts\;D:\hack\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\MySQL\MySQL Utilities 1.6\;C:\Program Files\Java\jdk1.8.0_171\bin;C:\Program Files\Java\jre1.8.0_171\bin;C:\Program Files\nodejs\node_modules\npm\bin;F:\node\installation\;F:\node\git\Git\cmd;;D:\hack\nmap;C:\Users\Sabir PC\AppData\Roaming\npm;F:\node\installation\Microsoft VS Code\bin;F:\node\heroku\bin
@@ -14,8 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.2.1.tgz: unexpected end of file
-      at Zlib.zlibOnError [as onerror] (zlib.js:162:17)
+  Error: EPERM: operation not permitted, copyfile 'C:\Users\Sabir PC\AppData\Local\Yarn\Cache\v6\npm-react-native-view-shot-3.0.2-daccaec5b8038a680b17533ff7e72876e68c7d0d-integrity\node_modules\react-native-view-shot\src\index.d.ts' -> 'C:\Users\Sabir PC\Desktop\PN\shoppy\node_modules\react-native-view-shot\src\index.d.ts'
 
 npm manifest: 
   {
@@ -28,12 +27,16 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
+      "@react-native-community/masked-view": "0.1.5",
       "expo": "~36.0.0",
+      "expo-font": "~8.0.0",
       "react": "~16.9.0",
       "react-dom": "~16.9.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
       "react-native-gesture-handler": "~1.5.0",
       "react-native-reanimated": "~1.4.0",
+      "react-native-safe-area-context": "0.6.0",
+      "react-native-screens": "2.0.0-alpha.12",
       "react-native-web": "~0.11.7",
       "react-navigation": "^4.0.10",
       "react-navigation-header-buttons": "^3.0.4",
@@ -1123,6 +1126,11 @@ Lockfile:
       sudo-prompt "^9.0.0"
       wcwidth "^1.0.1"
       ws "^1.1.0"
+  
+  "@react-native-community/masked-view@0.1.5":
+    version "0.1.5"
+    resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.5.tgz#25421be6cd943a4b1660b62cfbcd45be8891462c"
+    integrity sha512-Lj1DzfCmW0f4HnmHtEuX8Yy2f7cnUA8r5KGGUuDDGtQt1so6QJkKeUmsnLo2zYDtsF8due6hvIL06Vdo5xxuLQ==
   
   "@react-navigation/core@^3.5.1":
     version "3.5.1"
@@ -4257,12 +4265,24 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.4.0.tgz#7f1acbf9be08492d834f512700570978052be2f9"
     integrity sha512-tO7nSNNP+iRLVbkcSS5GXyDBb7tSI02+XuRL3/S39EAr35rnvUy2JfeLUQG+fWSObJjnMVhasUDEUwlENk8IXw==
   
+  react-native-safe-area-context@0.6.0:
+    version "0.6.0"
+    resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-0.6.0.tgz#f53f5a5bcafb462a8798a26b145e68946389ad60"
+    integrity sha512-blY0akr3ZLTuZFdUotmjV+7LVXpBnd5CGFlNhTiarNNGJoHu79K42IJpUpmtg75iC9aWbSW7QHstlP0xz11V0A==
+  
   react-native-safe-area-view@^0.14.1:
     version "0.14.8"
     resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.8.tgz#ef33c46ff8164ae77acad48c3039ec9c34873e5b"
     integrity sha512-MtRSIcZNstxv87Jet+UsPhEd1tpGe8cVskDXlP657x6rHpSrbrc+y13ZNXrwAgGNNhqQNX7UJT68ZIq//ZRmvw==
     dependencies:
       hoist-non-react-statics "^2.3.1"
+  
+  react-native-screens@2.0.0-alpha.12:
+    version "2.0.0-alpha.12"
+    resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.0.0-alpha.12.tgz#35a6ef3b472958e9d35f0ca9e582d0d158f8e379"
+    integrity sha512-x9M7FEdcm97bVDp3pi//nhduJHLFMrmDQs0fq299yx3kHdgHbrmhsa8jgW4HvDQhjyPE0FWADY/GrXFuPRj80w==
+    dependencies:
+      debounce "^1.2.0"
   
   "react-native-screens@^1.0.0 || ^1.0.0-alpha":
     version "1.0.0-alpha.23"
