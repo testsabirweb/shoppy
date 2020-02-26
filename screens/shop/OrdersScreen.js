@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Text, Platform } from 'react-native'
+import { FlatList, Text, Platform, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
@@ -8,6 +8,13 @@ import OrderItem from '../../components/shop/OrderItem'
 
 const OrdersScreen = (props) => {
     const orders = useSelector(state => state.orders.orders)
+    if (orders.length === 0) {
+        return (
+            <View>
+                <Text>No order to display</Text>
+            </View>
+        )
+    }
     return (
         <FlatList
             data={orders}
