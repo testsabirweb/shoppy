@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, Platform, Button } from 'react-native'
+import { FlatList, Platform, Button, Alert } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
@@ -14,6 +14,18 @@ const UserProductsScreen = (props) => {
     const dispatch = useDispatch()
     const editProductHandler = (id) => {
         props.navigation.navigate('EditProduct', { productId: id })
+    }
+    const deleteHandler = (id) => {
+        Alert.alert('Are u sure', 'After Deletion u cannot recover that item', [
+            { text: 'No', type: 'default' },
+            {
+                text: 'Yes',
+                type: 'destructive',
+                onPress: () => {
+                    dispatch(productActions.deleteProduct(id))
+                }
+            }
+        ])
     }
     return (
         <FlatList
@@ -36,9 +48,7 @@ const UserProductsScreen = (props) => {
                     />
                     <Button color={Colors.primary}
                         title='Delete'
-                        onPress={() => {
-                            dispatch(productActions.deleteProduct(itemData.item.id))
-                        }}
+                        onPress={deleteHandler.bind(this, itemData.item.id)}
                     />
                 </ProductItem>
             )}

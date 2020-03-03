@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Text, View, StyleSheet, TextInput, ScrollView, Platform } from 'react-native'
+import {
+    Text,
+    View,
+    StyleSheet,
+    TextInput,
+    ScrollView,
+    Platform
+} from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -38,6 +45,7 @@ const EditProductScreen = (props) => {
                 )
             )
         }
+        props.navigation.goBack()
     }, [dispatch, prodId, title, imageUrl, description, price])
     useEffect(() => {
         props.navigation.setParams({ submit: submitHandler })
