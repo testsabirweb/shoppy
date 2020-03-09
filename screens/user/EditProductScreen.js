@@ -5,19 +5,18 @@ import React, {
     //it is just used to manage state which are related to each other
 } from 'react'
 import {
-    Text,
-    View,
     StyleSheet,
-    TextInput,
     ScrollView,
     Platform,
-    Alert
+    Alert,
+    KeyboardAvoidingView
 } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { useSelector, useDispatch } from 'react-redux'
 
 import HeaderButton from '../../components/UI/HeaderButton'
 import * as productActions from '../../store/actions/product'
+import Input from '../../components/UI/Input'
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
@@ -70,18 +69,26 @@ const EditProductScreen = (props) => {
     }
     const [formState, dispatchFormState] = useReducer(formReducer, initialState)
 
-    const textChangeHandler = (inputIdentifier, text) => {//text will be received automatically by react
-        let isValid = false
-        if (text.trim().length > 0) {
-            isValid = true
-        }
+    // const textChangeHandler = (inputIdentifier, text) => {//text will be received automatically by react
+    //     let isValid = false
+    //     if (text.trim().length > 0) {
+    //         isValid = true
+    //     }
+    //     dispatchFormState({
+    //         type: FORM_INPUT_UPDATE,
+    //         value: text,
+    //         isValid: isValid,
+    //         input: inputIdentifier
+    //     })
+    // }
+    const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
         dispatchFormState({
             type: FORM_INPUT_UPDATE,
-            value: text,
-            isValid: isValid,
+            value: inputValue,
+            isValid: inputValidity,
             input: inputIdentifier
         })
-    }
+    }, [dispatchFormState])
 
     const submitHandler = useCallback(() => {
         if (!formState.formIsValid) {
@@ -117,48 +124,65 @@ const EditProductScreen = (props) => {
     }, [submitHandler])
 
     return (
-        <ScrollView style={styles.form}>
-            <View style={styles.formControl}>
-                <Text style={styles.label}>Title</Text>
-                <TextInput style={styles.input}
-                    value={formState.inputValues.title}
-                    onChangeText={textChangeHandler.bind(this, 'title')}//we dont need to pass text explicitly
-                    //because it will be passed by react Eventhandler automatically as the last argument 
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior="padding"
+            keyboardVerticalOffset={100}
+        >
+            <ScrollView style={styles.form}>
+                <Input
+                    id='title'
+                    label='Title'
+                    errorText='please enter a valid title'
                     keyboardType='default'
                     autoCapitalize='sentences'
-                    autoCorrect={false}
+                    autoCorrect
                     returnKeyType='next'
+                    onInputChange={inputChangeHandler}
+                    initialValue={editedProduct ? editedProduct.title : ''}
+                    initiallyValid={!!editedProduct}
+                    required
                 />
-                {!formState.inputValidities.title && <Text>please enter a valid input</Text>}
-            </View>
-            <View style={styles.formControl}>
-                <Text style={styles.label}>Image URL</Text>
-                <TextInput style={styles.input}
-                    value={formState.inputValues.imageUrl}
-                    onChangeText={textChangeHandler.bind(this, 'imageUrl')}//we dont need to pass text explicitly
-                //because it will be passed by react Eventhandler automatically as the last argument
+                <Input
+                    id='imageUrl'
+                    label='Image URL'
+                    errorText='please enter a valid image url'
+                    keyboardType='default'
+                    returnKeyType='next'
+                    onInputChange={inputChangeHandler}
+                    initialValue={editedProduct ? editedProduct.imageUrl : ''}
+                    initiallyValid={!!editedProduct}
+                    required//it is not built in fun it is a prop see Input.js
                 />
-            </View>
-            {editedProduct ? null : (
-                <View style={styles.formControl}>
-                    <Text style={styles.label}>Price</Text>
-                    <TextInput style={styles.input}
-                        value={formState.inputValues.price}
-                        onChangeText={textChangeHandler.bind(this, 'price')}//we dont need to pass text explicitly
-                        //because it will be passed by react Eventhandler automatically as the last argument
+                {editedProduct ? null : (
+                    <Input
+                        id='price'
+                        label='Price'
+                        errorText='please enter a valid price'
                         keyboardType='decimal-pad'
-                    />
-                </View>)
-            }
-            <View style={styles.formControl}>
-                <Text style={styles.label}>Description</Text>
-                <TextInput style={styles.input}
-                    value={formState.inputValues.description}
-                    onChangeText={textChangeHandler.bind(this, 'description')}//we dont need to pass text explicitly
-                //because it will be passed by react Eventhandler automatically as the last argument
+                        returnKeyType='next'
+                        onInputChange={inputChangeHandler}
+                        required
+                        min={0.1}//it is not built in fun it is a prop see Input.js
+                    />)
+                }
+                <Input
+                    id='description'
+                    label='Description'
+                    errorText='please enter a valid description'
+                    keyboardType='default'
+                    autoCapitalize='sentences'
+                    autoCorrect
+                    multiline
+                    numberOfLines={3}
+                    onInputChange={inputChangeHandler}
+                    initialValue={editedProduct ? editedProduct.description : ''}
+                    initiallyValid={!!editedProduct}
+                    required
+                    minLength={5}//it is not built in fun it is a prop see Input.js
                 />
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -182,19 +206,6 @@ const styles = StyleSheet.create({
     form: {
         margin: 20
     },
-    formControl: {
-        width: '100%'
-    },
-    label: {
-        fontFamily: 'open-sans-bold',
-        marginVertical: 8
-    },
-    input: {
-        paddingHorizontal: 8,
-        paddingVertical: 5,
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1
-    }
 })
 
 export default EditProductScreen
