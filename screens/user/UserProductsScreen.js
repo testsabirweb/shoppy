@@ -1,5 +1,17 @@
-import React from 'react'
-import { FlatList, Platform, Button, Alert } from 'react-native'
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+} from 'react'
+import {
+    FlatList,
+    Platform,
+    Button,
+    Alert,
+    StyleSheet,
+    ActivityIndicator,
+    View
+} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
@@ -10,6 +22,9 @@ import * as productActions from '../../store/actions/product'
 
 
 const UserProductsScreen = (props) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState()
+
     const userProducts = useSelector(state => state.products.userProducts)
     const dispatch = useDispatch()
     const editProductHandler = (id) => {
@@ -21,12 +36,37 @@ const UserProductsScreen = (props) => {
             {
                 text: 'Yes',
                 type: 'destructive',
-                onPress: () => {
-                    dispatch(productActions.deleteProduct(id))
+                onPress: async () => {
+                    setError(null)
+                    setIsLoading(true)
+                    try {
+                        await dispatch(productActions.deleteProduct(id))
+                    } catch (err) {
+                        setError(err.message)
+                    }
+                    setIsLoading(false)
                 }
             }
         ])
     }
+
+    useEffect(() => {
+        if (error) {
+            Alert.alert('An error occured!',
+                error,
+                [{ text: 'Ok' }]
+            )
+        }
+    }, [error])
+
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color={Colors.primary} />
+            </View>
+        )
+    }
+
     return (
         <FlatList
             data={userProducts}
@@ -83,5 +123,13 @@ UserProductsScreen.navigationOptions = navData => {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    centered: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: "center"
+    }
+})
 
 export default UserProductsScreen

@@ -26,9 +26,19 @@ const ProductsOverviewScreen = (props) => {
         setIsLoading(false)
     }, [dispatch, setIsLoading, setError])
 
-    useEffect(() => {
+    useEffect(() => {//this is responsible for fetching data when the app refresh
         loadProducts()
     }, [dispatch])
+
+    useEffect(() => {//this is responsible for fetching data whenever user navigate from one screen to another
+        const willFocusSubscription = props.navigation.addListener(
+            'willFocus',//listens when transition of the screen begins
+            loadProducts//callback function runs whenever event occurs
+        )
+        return () => {//cleanup function
+            willFocusSubscription.remove()
+        }
+    }, [loadProducts])
 
     const selectItemHandler = (id, title) => {
         props.navigation.navigate('ProductDetail', {

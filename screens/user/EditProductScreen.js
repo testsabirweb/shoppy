@@ -1,4 +1,5 @@
 import React, {
+    useState,
     useEffect,
     useCallback,
     useReducer//this is not a reducer of redux store 
@@ -9,7 +10,9 @@ import {
     ScrollView,
     Platform,
     Alert,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ActivityIndicator,
+    View
 } from 'react-native'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { useSelector, useDispatch } from 'react-redux'
@@ -17,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import HeaderButton from '../../components/UI/HeaderButton'
 import * as productActions from '../../store/actions/product'
 import Input from '../../components/UI/Input'
+import Colors from '../../constants/Colors';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
@@ -45,6 +49,9 @@ const formReducer = (state, action) => {
 }
 
 const EditProductScreen = (props) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState()
+
     const prodId = props.navigation.getParam('productId')
     const editedProduct = useSelector((state) => {
         return (state.products.userProducts.find(prod => prod.id === prodId))
@@ -90,38 +97,63 @@ const EditProductScreen = (props) => {
         })
     }, [dispatchFormState])
 
-    const submitHandler = useCallback(() => {
+    const submitHandler = useCallback(async () => {
         if (!formState.formIsValid) {
             Alert.alert('Wrong Input',
                 'Please check the error in the form',
                 [{ text: 'Okay' }])
             return;
         }
-        if (editedProduct) {
-            dispatch(
-                productActions.updateProduct(
-                    prodId,
-                    formState.inputValues.title,
-                    formState.inputValues.description,
-                    formState.inputValues.imageUrl
+        setError(null)
+        setIsLoading(true)
+        try {
+            if (editedProduct) {
+                await dispatch(
+                    productActions.updateProduct(
+                        prodId,
+                        formState.inputValues.title,
+                        formState.inputValues.description,
+                        formState.inputValues.imageUrl
+                    )
                 )
-            )
-        } else {
-            dispatch(
-                productActions.createProduct(
-                    formState.inputValues.title,
-                    formState.inputValues.description,
-                    formState.inputValues.imageUrl,
-                    +formState.inputValues.price///+ sign is just for handling float type
+            } else {
+                await dispatch(
+                    productActions.createProduct(
+                        formState.inputValues.title,
+                        formState.inputValues.description,
+                        formState.inputValues.imageUrl,
+                        +formState.inputValues.price///+ sign is just for handling float type
+                    )
                 )
-            )
+            }
+            props.navigation.goBack()
+        } catch (err) {
+            setError(err.message)
         }
-        props.navigation.goBack()
+        setIsLoading(false)
+        // props.navigation.goBack()
     }, [dispatch, prodId, formState])
 
     useEffect(() => {
         props.navigation.setParams({ submit: submitHandler })
     }, [submitHandler])
+
+    useEffect(() => {
+        if (error) {
+            Alert.alert('An error occured!',
+                error,
+                [{ text: 'Ok' }]
+            )
+        }
+    }, [error])
+
+    if (isLoading) {
+        return (
+            <View style={styles.centered}>
+                <ActivityIndicator size="large" color={Colors.primary} />
+            </View>
+        )
+    }
 
     return (
         <KeyboardAvoidingView
@@ -206,6 +238,11 @@ const styles = StyleSheet.create({
     form: {
         margin: 20
     },
+    centered: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: "center"
+    }
 })
 
 export default EditProductScreen
