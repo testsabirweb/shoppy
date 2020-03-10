@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { FlatList, Platform, Button, ActivityIndicator, View, StyleSheet, Text } from 'react-native'
+import {
+    FlatList,
+    Platform,
+    Button,
+    ActivityIndicator,
+    View,
+    StyleSheet,
+    Text,
+    RefreshControl
+} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
@@ -11,23 +20,29 @@ import Colors from '../../constants/Colors'
 
 const ProductsOverviewScreen = (props) => {
     const [isLoading, setIsLoading] = useState(false)
+    const [isRefreshing, setIsRefreshing] = useState(false)
     const [error, setError] = useState()
     const products = useSelector((state) => state.products.availableProducts)
     const dispatch = useDispatch()
 
     const loadProducts = useCallback(async () => {
         setError(null)
-        setIsLoading(true)
+        setIsRefreshing(true)
+        // setIsLoading(true)
         try {
             await dispatch(productActions.fetchProducts())
         } catch (err) {
             setError(err.message)
         }
-        setIsLoading(false)
-    }, [dispatch, setIsLoading, setError])
+        setIsRefreshing(false)
+        // setIsLoading(false)
+    }, [dispatch, setIsRefreshing, setError])
 
     useEffect(() => {//this is responsible for fetching data when the app refresh
-        loadProducts()
+        setIsLoading(true)
+        loadProducts().then(() => {
+            setIsLoading(false)
+        })
     }, [dispatch])
 
     useEffect(() => {//this is responsible for fetching data whenever user navigate from one screen to another
@@ -78,6 +93,16 @@ const ProductsOverviewScreen = (props) => {
 
     return (
         <FlatList
+            // onRefresh={loadProducts}
+            // refreshing={isRefreshing}
+            refreshControl={<RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={loadProducts}
+                title="Pull to refresh"
+                tintColor={Colors.primary}
+                titleColor={Colors.accent}
+                colors={[Colors.primary]}
+            />}
             data={products}
             keyExtractor={item => item.id}
             renderItem={(itemData) => {
