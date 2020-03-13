@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useReducer, useCallback, useState } from 'react'
 import {
     ScrollView,
     View,
@@ -7,12 +7,83 @@ import {
     Button
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useDispatch } from 'react-redux'
 
 import Input from '../../components/UI/Input'
 import Card from '../../components/UI/Card'
 import Colors from '../../constants/Colors';
+import * as authActions from '../../store/actions/auth'
+
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
+
+const formReducer = (state, action) => {
+    if (action.type === FORM_INPUT_UPDATE) {
+        const updatedValues = {
+            ...state.inputValues,
+            [action.input]: action.value//creating key dynamically
+        }
+        const updatedValidities = {
+            ...state.inputValidities,
+            [action.input]: action.isValid//creating key dynamically
+        }
+        let updatedFormIsValid = true
+        for (const key in updatedValidities) {
+            updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
+        }
+        return {
+            ...state,
+            inputValues: updatedValues,
+            inputValidities: updatedValidities,
+            formIsValid: updatedFormIsValid
+        }
+    }
+    return state
+}
 
 const AuthScreen = (props) => {
+    const [isSignup, setIsSignup] = useState(false)
+    const dispatch = useDispatch()
+
+    const initialState = {
+        inputValues: {
+            email: '',
+            password: ''
+        },
+        inputValidities: {
+            email: false,
+            password: false
+        },
+        formIsValid: false
+    }
+
+    const [formState, dispatchFormState] = useReducer(formReducer, initialState)
+
+    const inputChangeHandler = useCallback((inputIdentifier, inputValue, inputValidity) => {
+        dispatchFormState({
+            type: FORM_INPUT_UPDATE,
+            value: inputValue,
+            isValid: inputValidity,
+            input: inputIdentifier
+        })
+    }, [dispatchFormState])
+
+    const authHandler = () => {
+        let action;
+        if (isSignup) {
+            action = authActions.signup(
+                formState.inputValues.email,
+                formState.inputValues.password
+            )
+        }
+        else {
+            action = authActions.login(
+                formState.inputValues.email,
+                formState.inputValues.password
+            )
+        }
+        dispatch(action)
+    }
+
     return (
         <KeyboardAvoidingView
             behavior="padding"
@@ -29,8 +100,8 @@ const AuthScreen = (props) => {
                             required//not a in built function see Input.js for reference
                             email//not a in built function see Input.js for reference
                             autoCapitalize="none"
-                            errorMessage="please enter a valid email address"
-                            onInputChange={() => { }}
+                            errorText="please enter a valid email address"
+                            onInputChange={inputChangeHandler}
                             initialValue=""
                         />
 
@@ -42,22 +113,24 @@ const AuthScreen = (props) => {
                             required//not a in built function see Input.js for reference
                             minLength={5}//not a in built function see Input.js for reference
                             autoCapitalize="none"
-                            errorMessage="please enter a valid password of minimun 5 characters"
-                            onInputChange={() => { }}
+                            errorText="please enter a valid password of minimun 5 characters"
+                            onInputChange={inputChangeHandler}
                             initialValue=""
                         />
                         <View style={styles.buttonContainer}>
                             <Button
-                                title="Login"
+                                title={isSignup ? 'Sign Up' : 'Login'}
                                 color={Colors.primary}
-                                onPress={() => { }}
+                                onPress={authHandler}
                             />
                         </View>
                         <View style={styles.buttonContainer}>
                             <Button
-                                title="SignUp"
+                                title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
                                 color={Colors.accent}
-                                onPress={() => { }}
+                                onPress={() => {
+                                    setIsSignup(prevState => !prevState)
+                                }}
                             />
                         </View>
                     </ScrollView>
