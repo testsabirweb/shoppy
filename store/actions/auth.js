@@ -1,10 +1,12 @@
+import * as keys from '../../key'
+
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
 
 export const signup = (email, password) => {
     return async dispatch => {
         const response = await fetch(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBF0pSMYtqvgmhEIskn87LdEyYUkAc1Tpc',
+            keys.signupKey,
             {
                 method: 'POST',
                 headers: {
@@ -19,7 +21,13 @@ export const signup = (email, password) => {
         );
 
         if (!response.ok) {
-            throw new Error('Something went wrong!');
+            const errResData = await response.json()
+            const errorId = errResData.error.message
+            let message = 'Something Went Wrong!!!'
+            if (errorId === 'EMAIL_EXISTS') {
+                message = 'Email already exists try SigningIn'
+            }
+            throw new Error(message)
         }
 
         const resData = await response.json();
@@ -31,7 +39,7 @@ export const signup = (email, password) => {
 export const login = (email, password) => {
     return async dispatch => {
         const response = await fetch(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBF0pSMYtqvgmhEIskn87LdEyYUkAc1Tpc',
+            keys.signinKey,
             {
                 method: 'POST',
                 headers: {
@@ -46,7 +54,15 @@ export const login = (email, password) => {
         );
 
         if (!response.ok) {
-            throw new Error('Something went wrong!');
+            const errResData = await response.json()
+            const errorId = errResData.error.message
+            let message = 'Something Went Wrong!!!'
+            if (errorId === 'EMAIL_NOT_FOUND') {
+                message = 'This email could not be found try SigningUp first'
+            } else if (errorId === 'INVALID_PASSWORD') {
+                message = 'The password is invalid'
+            }
+            throw new Error(message)
         }
 
         const resData = await response.json();

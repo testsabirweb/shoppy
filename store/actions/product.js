@@ -9,7 +9,7 @@ export const fetchProducts = () => {
     return async dispatch => {
         try {
             const response = await fetch(
-                'https://shoppy-abcd.firebaseio.com/products.json'
+                'https://shoppy-1234.firebaseio.com/products.json'
             )
 
             if (!response.ok) {
@@ -39,7 +39,7 @@ export const fetchProducts = () => {
 
 export const deleteProduct = (productId) => {
     return async dispatch => {
-        const response = await fetch(`https://shoppy-abcd.firebaseio.com/products/${productId}.json`,
+        const response = await fetch(`https://shoppy-1234.firebaseio.com/products/${productId}.json`,
             {
                 method: 'DELETE'
             }
@@ -66,7 +66,7 @@ export const createProduct = (title, description, imageUrl, price) => {
     //     }
     // }
     return async dispatch => {//if any action return any function then redux thunk manages it.
-        const response = await fetch('https://shoppy-abcd.firebaseio.com/products.json', {
+        const response = await fetch('https://shoppy-1234.firebaseio.com/products.json', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ export const createProduct = (title, description, imageUrl, price) => {
 
 export const updateProduct = (id, title, description, imageUrl) => {
     return async dispatch => {
-        const response = await fetch(`https://shoppy-abcd.firebaseio.com/products/${id}.json`, {
+        const response = await fetch(`https://shoppy-1234.firebaseio.com/products/${id}.json`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

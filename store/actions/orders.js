@@ -7,7 +7,7 @@ export const fetchOrders = () => {
     return async dispatch => {
         try {
             const response = await fetch(
-                'https://shoppy-abcd.firebaseio.com/orders/u1.json'
+                'https://shoppy-1234.firebaseio.com/orders/u1.json'
             )
 
             if (!response.ok) {
@@ -37,7 +37,7 @@ export const fetchOrders = () => {
 export const addOrder = (cartItems, totalAmount) => {
     return async dispatch => {
         const date = new Date()
-        const response = await fetch('https://shoppy-abcd.firebaseio.com/orders/u1.json', {
+        const response = await fetch('https://shoppy-1234.firebaseio.com/orders/u1.json', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
