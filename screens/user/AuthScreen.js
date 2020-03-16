@@ -95,10 +95,12 @@ const AuthScreen = (props) => {
         setError(null)
         try {
             await dispatch(action)
+            props.navigation.navigate('Shop')
         } catch (err) {
             setError(err.message)
+            setIsLoading(false)
         }
-        setIsLoading(false)
+        // setIsLoading(false)//cant perform a React state update on a unmounted component
     }
 
     return (

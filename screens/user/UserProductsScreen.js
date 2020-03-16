@@ -135,7 +135,9 @@ const styles = StyleSheet.create({
     centered: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: "center"
+        alignItems: "center",
+        fontFamily:'open-sans',
+        padding:20
     }
 })
 

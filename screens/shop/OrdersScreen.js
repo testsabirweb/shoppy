@@ -66,7 +66,7 @@ const OrdersScreen = (props) => {
     if (!isLoading && orders.length === 0) {
         return (
             <View style={styles.centered}>
-                <Text>No products found,Maybe start adding some!</Text>
+                <Text>No products found,Maybe start ordering some!!!</Text>
             </View>
         )
     }
@@ -106,7 +106,9 @@ const styles = StyleSheet.create({
     centered: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: "center"
+        alignItems: "center",
+        fontFamily: 'open-sans',
+        padding: 20
     }
 })
 
