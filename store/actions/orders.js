@@ -37,10 +37,10 @@ export const fetchOrders = () => {
 
 export const addOrder = (cartItems, totalAmount) => {
     return async (dispatch, getState) => {
-        const token = getState().auth.token
+        const idToken = getState().auth.idToken
         const userId = getState().auth.userId
         const date = new Date()
-        const response = await fetch(`https://shoppy-1234.firebaseio.com/orders/${userId}.json?auth=${token}`, {
+        const response = await fetch(`https://shoppy-1234.firebaseio.com/orders/${userId}.json?auth=${idToken}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

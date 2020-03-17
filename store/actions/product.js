@@ -44,9 +44,9 @@ export const fetchProducts = () => {
 
 export const deleteProduct = (productId) => {
     return async (dispatch, getState) => {
-        const token = getState().auth.token
+        const idToken = getState().auth.idToken
 
-        const response = await fetch(`https://shoppy-1234.firebaseio.com/products/${productId}.json?auth=${token}`,
+        const response = await fetch(`https://shoppy-1234.firebaseio.com/products/${productId}.json?auth=${idToken}`,
             {
                 method: 'DELETE'
             }
@@ -73,9 +73,9 @@ export const createProduct = (title, description, imageUrl, price) => {
     //     }
     // }
     return async (dispatch, getState) => {//if any action return any function then redux thunk manages it.
-        const token = getState().auth.token
+        const idToken = getState().auth.idToken
         const userId = getState().auth.userId
-        const response = await fetch(`https://shoppy-1234.firebaseio.com/products.json?auth=${token}`, {
+        const response = await fetch(`https://shoppy-1234.firebaseio.com/products.json?auth=${idToken}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -108,9 +108,9 @@ export const createProduct = (title, description, imageUrl, price) => {
 export const updateProduct = (id, title, description, imageUrl) => {
     return async (dispatch, getState) => {//getState is provided by redux thunk
         //it helps us to access state while in staying in actions folder
-        const token = getState().auth.token
+        const idToken = getState().auth.idToken
 
-        const response = await fetch(`https://shoppy-1234.firebaseio.com/products/${id}.json?auth=${token}`, {
+        const response = await fetch(`https://shoppy-1234.firebaseio.com/products/${id}.json?auth=${idToken}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
