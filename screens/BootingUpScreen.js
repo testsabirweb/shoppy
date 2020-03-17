@@ -27,8 +27,11 @@ const BootingUpScreen = (props) => {
                 props.navigation.navigate('Auth')
                 return
             }
+
+            const expirationTime = expirationDate.getTime() - new Date().getTime()
+
             props.navigation.navigate('Shop')
-            dispatch(authActions.authenticate(userId, idToken))
+            dispatch(authActions.authenticate(userId, idToken, expirationTime))
         }
         tryLogin()
     }, [dispatch])
