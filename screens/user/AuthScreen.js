@@ -95,7 +95,8 @@ const AuthScreen = (props) => {
         setError(null)
         try {
             await dispatch(action)
-            props.navigation.navigate('Shop')
+            // props.navigation.navigate('Shop')
+            //now navigaiton is not needed only by dispatching action we set isAuth to true so then it renders ShopNavigator 
         } catch (err) {
             setError(err.message)
             setIsLoading(false)
@@ -165,7 +166,7 @@ const AuthScreen = (props) => {
     )
 }
 
-AuthScreen.navigationOptions = {
+export const authScreenOptions = {
     headerTitle: 'Authenticate'
 }
 

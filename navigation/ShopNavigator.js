@@ -11,8 +11,7 @@ import CartScreen, { cartScreenOptions } from '../screens/shop/CartScreen'
 import OrdersScreen, { ordersScreenOptions } from '../screens/shop/OrdersScreen'
 import UserProductsScreen, { userProductsScreenOptions } from '../screens/user/UserProductsScreen'
 import EditProductScreen, { editProductScreenOptions } from '../screens/user/EditProductScreen'
-import AuthScreen from '../screens/user/AuthScreen'
-import BootingUpScreen from '../screens/BootingUpScreen'
+import AuthScreen, { authScreenOptions } from '../screens/user/AuthScreen'
 import Colors from '../constants/Colors'
 import * as authActions from '../store/actions/auth'
 
@@ -31,7 +30,7 @@ const defaultNavOptions = {
 
 const ProductsStackNavigator = createStackNavigator()
 
-export const ProductsNavigator = () => {
+const ProductsNavigator = () => {
   return (
     <ProductsStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <ProductsStackNavigator.Screen
@@ -73,7 +72,7 @@ export const ProductsNavigator = () => {
 
 const OrdersStackNavigator = createStackNavigator()
 
-export const OrdersNavigator = () => {
+const OrdersNavigator = () => {
   return (
     <OrdersStackNavigator.Navigator screenOptions={defaultNavOptions}>
       <OrdersStackNavigator.Screen
@@ -103,15 +102,15 @@ export const OrdersNavigator = () => {
 
 const AdminStackNavigator = createStackNavigator()
 
-export const AdminNavigator = () => {
+const AdminNavigator = () => {
   return (
     <AdminStackNavigator.Navigator screenOptions={defaultNavOptions}>
-      <AdminNavigator.Screen
+      <AdminStackNavigator.Screen
         name='UserProducts'
         component={UserProductsScreen}
         options={userProductsScreenOptions}
       />
-      <AdminNavigator.Screen
+      <AdminStackNavigator.Screen
         name='EditProduct'
         component={EditProductScreen}
         options={editProductScreenOptions}
@@ -139,7 +138,7 @@ export const AdminNavigator = () => {
 
 const ShopStackNavigator = createDrawerNavigator()
 
-const ShopNavigator = () => {
+export const ShopNavigator = () => {
   const dispatch = useDispatch()
 
   return (
@@ -228,6 +227,20 @@ const ShopNavigator = () => {
 //     }
 //   }
 // )
+
+const AuthStackNavigator = createStackNavigator()
+
+export const AuthNavigator = () => {
+  return (
+    <AuthStackNavigator.Navigator screenOptions={defaultNavOptions}>
+      <AuthStackNavigator.Screen
+        name='Auth'
+        component={AuthScreen}
+        options={authScreenOptions}
+      />
+    </AuthStackNavigator.Navigator>
+  )
+}
 
 // const AuthNavigator = createStackNavigator({
 //   Auth: AuthScreen

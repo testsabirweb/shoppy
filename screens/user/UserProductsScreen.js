@@ -106,7 +106,7 @@ const UserProductsScreen = (props) => {
 export const userProductsScreenOptions = navData => {
     return {
         headerTitle: 'Your Products',
-        headerLeft: (
+        headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                     title="menu"
@@ -117,7 +117,7 @@ export const userProductsScreenOptions = navData => {
                 />
             </HeaderButtons>
         ),
-        headerRight: (
+        headerRight:() => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                     title="Add"
@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: "center",
-        fontFamily:'open-sans',
-        padding:20
+        fontFamily: 'open-sans',
+        padding: 20
     }
 })
 

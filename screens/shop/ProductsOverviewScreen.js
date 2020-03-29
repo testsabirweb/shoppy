@@ -46,12 +46,12 @@ const ProductsOverviewScreen = (props) => {
     }, [dispatch])
 
     useEffect(() => {//this is responsible for fetching data whenever user navigate from one screen to another
-        const willFocusSubscription = props.navigation.addListener(
-            'willFocus',//listens when transition of the screen begins
+        const unsubscribe = props.navigation.addListener(
+            'focus',//listens when transition of the screen begins
             loadProducts//callback function runs whenever event occurs
         )
         return () => {//cleanup function
-            willFocusSubscription.remove()
+            unsubscribe()
         }
     }, [loadProducts])
 
