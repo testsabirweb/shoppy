@@ -57,7 +57,7 @@ const CartScreen = props => {
             )
         }
     }, [error])
-    
+
     return (
         <View style={styles.screen}>
             <Card style={styles.summary}>
@@ -96,7 +96,7 @@ const CartScreen = props => {
     );
 };
 
-CartScreen.navigationOptions = {
+export const cartScreenOptions = {
     headerTitle: 'Your Cart'
 };
 

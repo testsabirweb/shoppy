@@ -134,10 +134,10 @@ const ProductsOverviewScreen = (props) => {
     )
 }
 
-ProductsOverviewScreen.navigationOptions = navData => {
+export const productsOverviewScreenOptions = navData => {
     return {
         headerTitle: 'All Products',
-        headerLeft: (
+        headerLeft: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                     title="menu"
@@ -148,7 +148,7 @@ ProductsOverviewScreen.navigationOptions = navData => {
                 />
             </HeaderButtons>
         ),
-        headerRight: (
+        headerRight: () => (
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                     title="cart"
